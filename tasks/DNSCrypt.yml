@@ -153,6 +153,7 @@
     - dnscrypt
     - dnscrypt_systemd
 
+
 # Modify PIHOLE
 - name: '[DNSCrypt] Generate /etc/dnsmasq.d/02-dnscrypt.conf'
   template:
