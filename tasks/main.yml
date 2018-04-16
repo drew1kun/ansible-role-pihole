@@ -63,8 +63,8 @@
     - pihole
 
 - name: '[main] make sure dns is set to 127.0.0.1'
-  copy:
-    src: resolv.conf
+  template:
+    src: resolv.conf.j2
     dest: /etc/resolv.conf
     owner: root
     group: root

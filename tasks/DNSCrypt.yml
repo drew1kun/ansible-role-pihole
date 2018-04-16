@@ -116,6 +116,39 @@
     - dnscrypt
 
 
+# Systemd
+- name: '[DNSCrytp] Check if systemd is present in distribution'
+  stat: path=/bin/systemctl
+  register: pihole_sysemd
+
+- name: '[DNSCrypt] Generate systemd dnscrypt-proxy.socket unit'
+  template:
+    src: systemd/dnscrypt-proxy.socket.j2
+    dest: /lib/systemd/system/dnscrypt-proxy.socket
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: pihole_systemd.stat.exists
+  tags:
+    - pihole
+    - dnscrypt
+    - dnscrypt_systemd
+
+- name: '[DNSCrypt] Generate systemd dnscrypt-proxy.service unit'
+  template:
+    src: systemd/dnscrypt-proxy.service.j2
+    dest: /lib/systemd/system/dnscrypt-proxy.service
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: pihole_systemd.stat.exists
+  tags:
+    - pihole
+    - dnscrypt
+    - dnscrypt_systemd
+
 # Modify PIHOLE
 - name: '[DNSCrypt] Generate /etc/dnsmasq.d/02-dnscrypt.conf'
   template:

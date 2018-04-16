@@ -1,0 +1,14 @@
+[Unit]
+Description=DNSCrypt-proxy socket
+Documentation=https://github.com/jedisct1/dnscrypt-proxy/wiki
+Before=nss-lookup.target
+Wants=nss-lookup.target
+
+[Socket]
+ListenStream={{ pihole_dnscrypt_ipv4_address }}:{{ pihole_dnscrypt_port }}
+ListenDatagram={{ pihole_dnscrypt_ipv4_address }}:{{ pihole_dnscrypt_port }}
+NoDelay=true
+DeferAcceptSec=1
+
+[Install]
+WantedBy=sockets.target
