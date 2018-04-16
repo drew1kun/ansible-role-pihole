@@ -120,6 +120,10 @@
 - name: '[DNSCrytp] Check if systemd is present in distribution'
   stat: path=/bin/systemctl
   register: pihole_sysemd
+  tags:
+    - pihole
+    - dnscrypt
+    - dnscrypt_systemd
 
 - name: '[DNSCrypt] Generate systemd dnscrypt-proxy.socket unit'
   template:
