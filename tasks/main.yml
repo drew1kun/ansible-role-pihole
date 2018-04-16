@@ -8,6 +8,12 @@
     - pihole
     - pihole_dependencies
 
+- name: '[main] Check if pihole is already installed'
+  stat: path=/usr/local/bin/pihole
+  register: pihole
+  tags:
+    - pihole
+
 - name: '[main] Make sure /etc/pihole directory exists'
   file:
     state: directory
@@ -27,6 +33,7 @@
     group: root
     mode: 0644
   become: yes
+  when: not pihole.stat.exists or ( pihole.stat.exists and pihole_force_upgrade )
   tags:
     - pihole
 
@@ -34,12 +41,6 @@
   get_url:
     url: https://install.pi-hole.net
     dest: /tmp/pihole.sh
-  tags:
-    - pihole
-
-- name: '[main] Check if pihole is already installed'
-  stat: path=/usr/local/bin/pihole
-  register: pihole
   tags:
     - pihole
 
