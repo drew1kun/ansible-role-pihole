@@ -119,7 +119,7 @@
 # Systemd
 - name: '[DNSCrytp] Check if systemd is present in distribution'
   stat: path=/bin/systemctl
-  register: pihole_sysemd
+  register: pihole_systemd
   tags:
     - pihole
     - dnscrypt
