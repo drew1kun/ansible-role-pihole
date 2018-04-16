@@ -73,6 +73,14 @@
   tags:
     - pihole
 
+# Attention! If /etc/resolv.conf needs to be unlocked and changed, run in root shell:
+# chattr -i /etc/resolv.conf
+- name: '[main] make sure /etc/resolv.conf will stay the same no matter what'
+  command: chattr +i /etc/resolv.conf
+  become: yes
+  tags:
+    - pihole
+
 - name: '[main] Include DNSCrypt related tasks'
   include_tasks: DNSCrypt.yml
   when: pihole_dnscrypt
