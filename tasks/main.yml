@@ -6,9 +6,7 @@
   include_tasks: dependencies.yml
   tags:
     - pihole
-    - dnscrypt
-  tags:
-    - pihole
+    - pihole_dependencies
 
 - name: '[main] Make sure /etc/pihole directory exists'
   file:
@@ -87,5 +85,4 @@
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 ...
