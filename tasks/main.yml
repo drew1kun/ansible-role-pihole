@@ -87,5 +87,5 @@
   tags:
     - pihole
     - dnscrypt
-
+    - dnscrypt_systemd
 ...
