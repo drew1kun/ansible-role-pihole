@@ -14,13 +14,13 @@ ProtectControlGroups=yes
 ProtectKernelModules=yes
 
 # Run dnscrypt-proxy as unprivileged user with
-# # temporary assigned UID/GID. See man:systemd.exec
-# # for more info. Requires systemd 232+.
-# DynamicUser=yes
-# CacheDirectory=dnscrypt-proxy
-# LogsDirectory=dnscrypt-proxy
-# RuntimeDirectory=dnscrypt-proxy
-#
-# [Install]
-# Also=dnscrypt-proxy.socket
-# WantedBy=multi-user.target
+# temporary assigned UID/GID. See man:systemd.exec
+# for more info. Requires systemd 232+.
+DynamicUser=yes
+CacheDirectory=dnscrypt-proxy
+LogsDirectory=dnscrypt-proxy
+RuntimeDirectory=dnscrypt-proxy
+
+[Install]
+Also=dnscrypt-proxy.socket
+WantedBy=multi-user.target
