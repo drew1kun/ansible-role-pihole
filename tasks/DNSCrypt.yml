@@ -108,9 +108,21 @@
     - pihole
     - dnscrypt
 
-- name: '[DNSCrypt] Run <sudo setcap cap_net_bind_service=+pe dnscrypt-proxy>'
+- name: '[DNSCrypt] Check dnscrypt-proxy binary capabilities for running it as unprivileged user'
+  command: setcap -v cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
+  become: yes
+  register: pihole_dnscrypt_bin_cap
+  failed_when: false
+  changed_when: false
+  tags:
+    - pihole
+    - dnscrypt
+
+
+- name: '[DNSCrypt] Fix dnscrypt-proxy binary capabilities for running it as unprivileged user'
   command: setcap cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
   become: yes
+  when: pihole_dnscrypt_bin_cap.rc != 0
   tags:
     - pihole
     - dnscrypt
