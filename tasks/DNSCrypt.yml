@@ -123,7 +123,6 @@
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 
 - name: '[DNSCrypt] Generate systemd dnscrypt-proxy.socket unit'
   template:
@@ -134,10 +133,10 @@
     mode: 0644
   become: yes
   when: pihole_systemd.stat.exists
+  notify: Restart dnscrypt-proxy.service
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 
 - name: '[DNSCrypt] Generate systemd dnscrypt-proxy.service unit'
   template:
@@ -148,10 +147,10 @@
     mode: 0644
   become: yes
   when: pihole_systemd.stat.exists
+  notify: Restart dnscrypt-proxy.service
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 
 
 # Modify PIHOLE

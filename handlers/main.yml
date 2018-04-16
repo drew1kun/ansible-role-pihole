@@ -4,4 +4,9 @@
 - name: Restart dnsmasq
   service: name=dnsmasq state=restarted
   become: yes
+
+- name: Restart dnscrypt-proxy servcie
+  service: name=dnscrypt-proxy.server state=restarted
+  listen: Restart dnscrypt-proxy.service
+  become: yes
 ...
