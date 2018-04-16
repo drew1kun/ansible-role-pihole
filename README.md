@@ -1,0 +1,77 @@
+Ansible role: bootstrap_core
+=========
+
+[![MIT licensed][mit-badge]][mit-link]
+[![Galaxy Role][role-badge]][galaxy-link]
+
+Ansible role which installs and configures [Pihole] and [DNSCrypt-proxy2][dnscrypt-proxy2-link] on RaspberryPi.
+
+Requirements
+------------
+
+NOTE: Role requires Fact Gathering by ansible!
+
+One of the following distros (or derivatives) required:
+ - Debian | Raspbian | [Minibian][minibian-link]
+    - jessie
+    - stretch
+
+Role Variables
+--------------
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| **pihole_force_upgrade** | Force reinstall `pihole` even if it's already installed |`no` |
+| **pihole_setupVars_conf** | Configuration for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
+| **pihole_dnsmasq_custom_conf** | Custom DNSMasq configuration | see [`defaults/main.yml`](defaults/main.yml) |
+| **pihole_dnscrypt** | Whether install DNSCrypt-proxy2 or not | `yes` |
+| **pihole_dnscrypt_force_upgrade** | Force reinstall `dnscrypt-proxy2` even if it's already installed | `no` |
+| **pihole_dnscrypt_proxy2_link** | url of the latest `dnscrypt-proxy2` version. Must be updated manually |
+`https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm-2.0.8.tar.gz` |
+
+### DNSCrypt-proxy configuration
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| **pihole_dnscrypt_ipv4_address** | IPv4 address for `dnscrypt-proxy` to listen on | `127.0.0.1` |
+| **pihole_dnscrypt_port** | Port for `dnscrypt-proxy` to listen on | `41` |
+| **pihole_dnscrypt_ipv4_servers** | Use servers reachable over IPv4 | `'true'` |
+| **pihole_dnscrypt_ipv6_servers** | Use servers reachable over IPv6. Do not enable if you don't have IPv6 set | `'false'` |
+up.
+| **pihole_dnscrypt_dc_servers** | Use servers implementing the DNSCrypt protocol | `'true'` |
+| **pihole_dnscrypt_doh_servers** | Use servers implementing the DNS-over-HTTPS protocol | `'true'` |
+| **pihole_dnscrypt_require_dnssec** | Server must use DNSSEC validation | `'true'` |
+| **pihole_dnscrypt_require_nolog** | Server must not log user queries (declarative) | `'true'` |
+| **pihole_dnscrypt_require_nofilter** | Server must NOT enforce its own blacklist (for parental control, ads blocking) | `'true'` |
+| **pihole_dnscrypt_force_tcp** | Always use TCP to connect to upstream servers. Useful for TOR. | `'false'` |
+| **pihole_dnscrypt_fallback_resolver** | non-encrypted fallback resolver. Only used if DNS config doesn't work. `114.114.114.114:53` for people in China | `9.9.9.9:5` |
+
+Dependencies
+------------
+
+None.
+
+Example Playbook
+----------------
+
+    - hosts: raspberrypi
+      gather_facts: yes
+      roles: drew-kun.pihole
+
+License
+-------
+
+[MIT][mit-link]
+
+Author Information
+------------------
+
+Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
+
+[role-badge]: https://img.shields.io/badge/role-drew--kun.pihole-green.svg
+[galaxy-link]: https://galaxy.ansible.com/drew-kun/pihole/
+[mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[mit-link]: https://raw.githubusercontent.com/drew-kun/ansible-pihole/master/LICENSE
+[minibian-link]: https://minibianpi.wordpress.com/
+[pihol]: https://pi-hole.net/
+[dnscrypt-proxy2-link]: https://github.com/jedisct1/dnscrypt-proxy

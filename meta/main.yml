@@ -1,0 +1,26 @@
+galaxy_info:
+  author: Andrew Shagayev
+
+  description: Install and configure Pihole on RaspberryPi along with DNSCypt-proxy2.
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  github_branch: master
+
+  platforms:
+  - name: Debian
+    versions:
+    - jessie
+    - stretch
+
+  galaxy_tags:
+  - pihole
+  - dnscrypt
+  - dnscrypt-proxy
+  - dnscrypt-proxy2
+
+dependencies: []
+
+...

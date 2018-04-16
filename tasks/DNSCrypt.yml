@@ -1,0 +1,152 @@
+---
+# DNSCrypt
+- name: '[DNSCrypt] Check if /opt/dnscrypt-proxy already exists'
+  stat: path=/opt/dnscrypt-proxy
+  register: pihole_dnscrypt_proxy
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Download dnscrypt-proxy2'
+  unarchive:
+    src: "{{ pihole_dnscrypt_proxy2_link }}"
+    dest: /opt/
+    remote_src: yes
+  become: yes
+  when: pihole_dnscrypt_force_upgrade or not pihole_dnscrypt_proxy.stat.exists
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Make sure old /opt/dnscrypt-proxy is removed if pihole_dnscrypt_force_upgrade is set to yes'
+  file: path=/opt/dnscrypt-proxy state=absent
+  when:
+    - pihole_dnscrypt_force_upgrade
+    - pihole_dnscrypt_proxy.stat.exists
+  become: yes
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Check if /opt/linux-arm exists'
+  stat: path=/opt/linux-arm
+  register: pihole_linux_arm
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Rename /opt/linux-arm to /opt/dnscrypt-proxy'
+  command: mv /opt/linux-arm /opt/dnscrypt-proxy
+  become: yes
+  when:
+    - pihole_linux_arm.stat.exists
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Create a symlink for /opt/dnscrypt-proxy in /usr/local/bin'
+  file:
+    src: /opt/dnscrypt-proxy/dnscrypt-proxy
+    dest: /usr/local/bin/dnscrypt-proxy
+    state: link
+  become: yes
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Cleanup: removing /opt/linux-arm'
+  file: path=/opt/linux-arm state=absent
+  when: pihole_linux_arm.stat.exists
+  become: yes
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Generate /opt/dnscrypt-proxy/dnscrypt-proxy.toml configuration file'
+  template:
+    src: dnscrypt-proxy.toml.j2
+    dest: /opt/dnscrypt-proxy/dnscrypt-proxy.toml
+  become: yes
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Install dnscrypt-proxy service'
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
+  register: pihole_dnscrypt_proxy_installed
+  become: yes
+  failed_when:
+    - pihole_dnscrypt_proxy_installed.rc != 0
+    - pihole_dnscrypt_proxy_installed.rc != 255
+  changed_when: pihole_dnscrypt_proxy_installed.rc == 0
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Uninstall old dnscrypt-proxy service'
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service uninstall
+  become: yes
+  when:
+    - pihole_dnscrypt_proxy_installed.rc == 255
+    - pihole_dnscrypt_force_upgrade
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Upgrade dnscrypt-proxy service'
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
+  become: yes
+  when: pihole_dnscrypt_force_upgrade
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Start dnscrypt-proxy service'
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service start
+  become: yes
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Run <sudo setcap cap_net_bind_service=+pe dnscrypt-proxy>'
+  command: setcap cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
+  become: yes
+  tags:
+    - pihole
+    - dnscrypt
+
+
+# Modify PIHOLE
+- name: '[DNSCrypt] Generate /etc/dnsmasq.d/02-dnscrypt.conf'
+  template:
+    src: 02-dnscrypt.conf.j2
+    dest: /etc/dnsmasq.d/02-dnscrypt.conf
+  become: yes
+  notify: Restart dnsmasq
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Modify /etc/pihole/setupVars.conf'
+  replace:
+    path: /etc/pihole/setupVars.conf
+    regexp: '^(PIHOLE_DNS_[0-9]=.*)'
+    replace: '#\1'
+  become: yes
+  notify: Restart dnsmasq
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: '[DNSCrypt] Modify /etc/dnsmasq.d/01-pihole.conf'
+  replace:
+    path: /etc/dnsmasq.d/01-pihole.conf
+    regexp: '^(server=.*)'
+    replace: '#\1'
+  become: yes
+  notify: Restart dnsmasq
+  tags:
+    - pihole
+    - dnscrypt
+
+...

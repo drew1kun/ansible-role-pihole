@@ -1,0 +1,25 @@
+---
+- name: '[dependencies] Make sure curl package is installed'
+  package:
+    name: curl
+    state: present
+  become: yes
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: '[dependencies] Fix installer script issue on pre-stretch distros by "manually" trigering packages configuration'
+  apt:
+    name: "{{ item }}"
+    state: latest
+    install_recommends: no
+  with_items:
+    - php5-common
+    - php5-cgi
+    - php5-sqlite
+  become: yes
+  when: ansible_distribution_version < 9
+  tags:
+    - pihole
+    - pihole_dependencies
+...
