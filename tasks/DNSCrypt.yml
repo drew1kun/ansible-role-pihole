@@ -44,6 +44,7 @@
   command: setcap -v cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
   become: yes
   changed_when: false
+  register: pihole_dnscrypt_bin_cap
   tags:
     - pihole
     - dnscrypt
