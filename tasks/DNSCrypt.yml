@@ -43,6 +43,7 @@
 - name: "[DNSCrypt] Generate /opt/dnscrypt-proxy/dnscrypt-proxy.toml configuration file"
   template: src=dnscrypt-proxy.toml.j2 dest=/opt/dnscrypt-proxy/dnscrypt-proxy.toml
   become: yes
+  notify: Run 'dnscrypt-proxy -service restart'
   tags:
     - pihole
     - dnscrypt
