@@ -55,7 +55,7 @@
     - dnscrypt
 
 - name: "[DNSCrypt] Symlink /opt/dnscrypt-proxy/dnscrypt-proxy.toml to {{ pihole_dnscrypt_config }}"
-  file: src=/opt/dnscrypt-proxy/dnscrypt-proxy dest="{{ pihole_dnscrypt_config }}" state=link
+  file: src=/opt/dnscrypt-proxy/dnscrypt-proxy.toml dest="{{ pihole_dnscrypt_config }}" state=link
   become: yes
   tags:
     - pihole
