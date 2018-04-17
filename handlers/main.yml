@@ -10,7 +10,7 @@
   become: yes
 
 - name: Stop dnscrypt-proxy.service
-  service: name=dnscrypt-proxy.service state=restarted
+  service: name=dnscrypt-proxy.service state=stopped
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
 
@@ -20,8 +20,8 @@
   listen: Restart dnscrypt-proxy.socket systemd unit
 
 - name: Restart dnscrypt-proxy.socket
-#  service: name=dnscrypt-proxy.socket state=restarted
-  command: systemctl restart dnscrypt-proxy.socket
+  service: name=dnscrypt-proxy.socket state=restarted
+  #command: systemctl restart dnscrypt-proxy.socket
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
 ...
