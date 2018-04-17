@@ -47,8 +47,8 @@
     - pihole
     - dnscrypt
 
-- name: "[DNSCrypt] Create dnscrypt config directory: {{ pihole_dnscrypt_config }}"
-  file: path="{{ pihole_dnscrypt_config }}" state=directory
+- name: "[DNSCrypt] Create dnscrypt config directory"
+  file: path=/etc/dnscrypt-proxy state=directory
   become: yes
   tags:
     - pihole
