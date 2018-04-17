@@ -5,8 +5,12 @@
   service: name=dnsmasq state=restarted
   become: yes
 
+- name: 'Restart dnscrypt-proxy service'
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service restart
+  become: yes
+
 - name: Restart dnscrypt-proxy servcie
-  service: name=dnscrypt-proxy.server state=restarted
+  service: name=dnscrypt-proxy.service state=restarted
   listen: Restart dnscrypt-proxy.service
   become: yes
 ...
