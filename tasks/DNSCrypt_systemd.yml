@@ -8,7 +8,6 @@
     group: root
     mode: 0644
   become: yes
-  when: pihole_systemd.stat.exists
   notify: Restart dnscrypt-proxy.socket systemd unit
   tags:
     - pihole
@@ -22,7 +21,6 @@
     group: root
     mode: 0644
   become: yes
-  when: pihole_systemd.stat.exists
   notify: Restart dnscrypt-proxy.socket systemd unit
   tags:
     - pihole

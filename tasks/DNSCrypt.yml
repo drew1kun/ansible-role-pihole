@@ -88,9 +88,9 @@
     - pihole
     - dnscrypt
 
-- name: "[DNSCrytp] Check if distribution uses systemd init"
+- name: "[DNSCrytp] Include systemd-related tasks, if distro is using systemd init"
   include_tasks: DNSCrypt_systemd.yml
-  when: pihole_systemd
+  when: pihole_systemd.stat.exists
   tags:
     - pihole
     - dnscrypt
@@ -104,7 +104,7 @@
     - pihole_dnscrypt_proxy_installed.rc != 255
   changed_when: pihole_dnscrypt_proxy_installed.rc == 0
   notify: Run 'dnscrypt-proxy -service restart'
-  when: not pihole_systemd
+  when: not pihole_systemd.stat.exists
   tags:
     - pihole
     - dnscrypt
@@ -113,7 +113,7 @@
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service uninstall
   become: yes
   when:
-    - not pihole_systemd
+    - not pihole_systemd.stat.exists
     - pihole_dnscrypt_proxy_installed.rc == 255
     - pihole_dnscrypt_force_upgrade
   tags:
@@ -125,7 +125,7 @@
   become: yes
   notify: Run 'dnscrypt-proxy -service restart'
   when:
-    - not pihole_systemd
+    - not pihole_systemd.stat.exists
     - pihole_dnscrypt_force_upgrade
   tags:
     - pihole

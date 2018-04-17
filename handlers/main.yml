@@ -8,20 +8,29 @@
 - name: Run 'dnscrypt-proxy -service restart'
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service restart
   become: yes
-  when: not pihole_systemd
+  when: not pihole_systemd.stat.exists
+
+- name: Make sure built-in dnscrypt-proxy service is stopped, runing 'dnscrypt-proxy -service stop'
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service stop
+  become: yes
+  listen: Restart dnscrypt-proxy.socket systemd unit
+  when: pihole_systemd.stat.exists
 
 - name: Make sure dnscrypt-proxy.service is stopped before restarting Socket
   service: name=dnscrypt-proxy.service state=stopped
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
+  when: not pihole_systemd.stat.exists
 
 - name: Reload systemd daemon
   systemd: daemon_reload=yes
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
+  when: not pihole_systemd.stat.exists
 
 - name: Restart dnscrypt-proxy.socket
   service: name=dnscrypt-proxy.socket state=restarted
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
+  when: not pihole_systemd.stat.exists
 ...
