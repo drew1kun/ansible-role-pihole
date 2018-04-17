@@ -13,7 +13,6 @@
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 
 - name: "[DNSCrypt_systemd] Generate systemd dnscrypt-proxy.service unit"
   template:
@@ -28,5 +27,4 @@
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 ...

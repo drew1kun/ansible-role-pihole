@@ -6,6 +6,13 @@ Ansible role: bootstrap_core
 
 Ansible role which installs and configures [Pihole][pihole-link] and [DNSCrypt-proxy2][dnscrypt-proxy2-link] on RaspberryPi.
 
+The role achieves the following:
+ - Installs and configures pihole
+ - Installs dnscrypt-proxy 2
+ - Configures dnscrypt-proxy to be run as unprivileged user [ for security purposes ]
+ - If distro uses systemd init: configures systemd socket activated dnscrypt-proxy.service
+ - If distro does not use systemd: configures built in dnscrypt-proxy service
+
 Requirements
 ------------
 

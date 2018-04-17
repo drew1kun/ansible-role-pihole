@@ -94,7 +94,6 @@
   tags:
     - pihole
     - dnscrypt
-    - dnscrypt_systemd
 
 - name: "[DNSCrypt] Install dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
