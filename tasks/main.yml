@@ -72,11 +72,22 @@
   tags:
     - pihole
 
+- name: '[main] Check if "i" file attribute for /etc/resolv.conf is set'
+  shell: lsattr /etc/resolv.conf | cut -d ' ' -f 1 | grep -q "i"
+  register: pihole_resolv_conf_attrib_i
+  become: yes
+  tags:
+    - pihole
+
+- debug:
+    msg: "{{ pihole_resolv_conf_attrib_i }}"
+
 # Attention! If /etc/resolv.conf needs to be unlocked and changed, run in root shell:
 # chattr -i /etc/resolv.conf
-- name: '[main] make sure /etc/resolv.conf will stay the same no matter what'
+- name: '[main] Lock /etc/resolv.conf making sure it will always stay the same'
   command: chattr +i /etc/resolv.conf
   become: yes
+  when: pihole_resolv_conf_attrib_i.rc != 0
   tags:
     - pihole
 
