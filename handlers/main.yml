@@ -20,17 +20,17 @@
   service: name=dnscrypt-proxy.service state=stopped
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
-  when: not pihole_systemd.stat.exists
+  when: pihole_systemd.stat.exists
 
 - name: Reload systemd daemon
   systemd: daemon_reload=yes
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
-  when: not pihole_systemd.stat.exists
+  when: pihole_systemd.stat.exists
 
 - name: Restart dnscrypt-proxy.socket
   service: name=dnscrypt-proxy.socket state=restarted
   become: yes
   listen: Restart dnscrypt-proxy.socket systemd unit
-  when: not pihole_systemd.stat.exists
+  when: pihole_systemd.stat.exists
 ...
