@@ -69,7 +69,7 @@
     - pihole_dnscrypt_proxy_installed.rc != 0
     - pihole_dnscrypt_proxy_installed.rc != 255
   changed_when: pihole_dnscrypt_proxy_installed.rc == 0
-  notify: Restart dnscrypt-proxy service
+  notify: Run 'dnscrypt-proxy -service restart'
   tags:
     - pihole
     - dnscrypt
@@ -87,7 +87,7 @@
 - name: "[DNSCrypt] Upgrade dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
   become: yes
-  notify: Restart dnscrypt-proxy service
+  notify: Run 'dnscrypt-proxy -service restart'
   when: pihole_dnscrypt_force_upgrade
   tags:
     - pihole
@@ -129,7 +129,7 @@
     mode: 0644
   become: yes
   when: pihole_systemd.stat.exists
-  notify: Restart dnscrypt-proxy.service
+  notify: Restart dnscrypt-proxy.service systemd unit
   tags:
     - pihole
     - dnscrypt
