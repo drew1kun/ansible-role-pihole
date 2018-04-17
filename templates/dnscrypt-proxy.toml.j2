@@ -7,7 +7,11 @@
 
 ## List of local addresses and ports to listen to. Can be IPv4 and/or IPv6.
 ## Note: When using systemd socket activation, choose an empty set (i.e. [] ).
+{% if pihole_dnscrypt_socket_only %}
+listen_addresses = []
+{% else %}
 listen_addresses = ['{{ pihole_dnscrypt_ipv4_address }}:{{ pihole_dnscrypt_port }}', '[::1]:{{ pihole_dnscrypt_port }}']
+{% endif %}
 
 ## Maximum number of simultaneous client connections to accept
 max_clients = 250

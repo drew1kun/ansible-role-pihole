@@ -29,6 +29,7 @@ Role Variables
 | **pihole_dnscrypt_proxy2_link** | url of the latest `dnscrypt-proxy2` version. Must be updated manually | `https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm-2.0.8.tar.gz` |
 | **pihole_dnscrypt_bin** | Where to put dnscrypt-proxy binary | `/usr/local/bin/dnscrypt-proxy` |
 | **pihole_dnscrypt_config** | Where to store dnscrypt config | `/etc/dnscrypt-proxy/dnscrypt-proxy.toml` |
+| **pihole_dnscrypt_socket_only** | Use ONLY socket activation of dnscrypt-proxy.service | `yes` |
 
 ### DNSCrypt-proxy config-related vars
 
