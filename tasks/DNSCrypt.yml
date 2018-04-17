@@ -8,29 +8,19 @@
     - dnscrypt
 
 - name: '[DNSCrypt] Download dnscrypt-proxy2'
-  unarchive:
-    src: "{{ pihole_dnscrypt_proxy2_link }}"
-    dest: /opt/
-    remote_src: yes
+  unarchive: src="{{ pihole_dnscrypt_proxy2_link }}" dest=/opt/ remote_src=yes
   become: yes
+  register: pihole_linux_arm
   when: pihole_dnscrypt_force_upgrade or not pihole_dnscrypt_proxy.stat.exists
+  # without 'when' will be downloaded unconditionally, because creates 'linux-arm' dir which will be renamed
   tags:
     - pihole
     - dnscrypt
 
 - name: '[DNSCrypt] Make sure old /opt/dnscrypt-proxy is removed if pihole_dnscrypt_force_upgrade is set to yes'
   file: path=/opt/dnscrypt-proxy state=absent
-  when:
-    - pihole_dnscrypt_force_upgrade
-    - pihole_dnscrypt_proxy.stat.exists
+  when: pihole_dnscrypt_force_upgrade
   become: yes
-  tags:
-    - pihole
-    - dnscrypt
-
-- name: '[DNSCrypt] Check if /opt/linux-arm exists'
-  stat: path=/opt/linux-arm
-  register: pihole_linux_arm
   tags:
     - pihole
     - dnscrypt
@@ -38,34 +28,20 @@
 - name: '[DNSCrypt] Rename /opt/linux-arm to /opt/dnscrypt-proxy'
   command: mv /opt/linux-arm /opt/dnscrypt-proxy
   become: yes
-  when:
-    - pihole_linux_arm.stat.exists
+  when: pihole_linux_arm.changed
   tags:
     - pihole
     - dnscrypt
 
 - name: '[DNSCrypt] Create a symlink for /opt/dnscrypt-proxy in /usr/local/bin'
-  file:
-    src: /opt/dnscrypt-proxy/dnscrypt-proxy
-    dest: /usr/local/bin/dnscrypt-proxy
-    state: link
-  become: yes
-  tags:
-    - pihole
-    - dnscrypt
-
-- name: '[DNSCrypt] Cleanup: removing /opt/linux-arm'
-  file: path=/opt/linux-arm state=absent
-  when: pihole_linux_arm.stat.exists
+  file: src=/opt/dnscrypt-proxy/dnscrypt-proxy dest=/usr/local/bin/dnscrypt-proxy state=link
   become: yes
   tags:
     - pihole
     - dnscrypt
 
 - name: '[DNSCrypt] Generate /opt/dnscrypt-proxy/dnscrypt-proxy.toml configuration file'
-  template:
-    src: dnscrypt-proxy.toml.j2
-    dest: /opt/dnscrypt-proxy/dnscrypt-proxy.toml
+  template: src=dnscrypt-proxy.toml.j2 dest=/opt/dnscrypt-proxy/dnscrypt-proxy.toml
   become: yes
   tags:
     - pihole
@@ -162,9 +138,7 @@
 
 # Modify PIHOLE
 - name: '[DNSCrypt] Generate /etc/dnsmasq.d/02-dnscrypt.conf'
-  template:
-    src: 02-dnscrypt.conf.j2
-    dest: /etc/dnsmasq.d/02-dnscrypt.conf
+  template: src=02-dnscrypt.conf.j2 dest=/etc/dnsmasq.d/02-dnscrypt.conf
   become: yes
   notify: Restart dnsmasq
   tags:
@@ -192,5 +166,4 @@
   tags:
     - pihole
     - dnscrypt
-
 ...

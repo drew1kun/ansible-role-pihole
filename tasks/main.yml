@@ -95,4 +95,9 @@
   tags:
     - pihole
     - dnscrypt
+
+- meta: flush_handlers
+  tags:
+    - pihole
+    - dnscrypt
 ...
