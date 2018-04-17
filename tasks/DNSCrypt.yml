@@ -43,7 +43,10 @@
 - name: "[DNSCrypt] Generate /opt/dnscrypt-proxy/dnscrypt-proxy.toml configuration file"
   template: src=dnscrypt-proxy.toml.j2 dest=/opt/dnscrypt-proxy/dnscrypt-proxy.toml
   become: yes
-  notify: Run 'dnscrypt-proxy -service restart'
+  #notify: Run 'dnscrypt-proxy -service restart'
+  notify:
+    - Restart dnscrypt-proxy.socket systemd unit
+    - Run 'dnscrypt-proxy -service restart'
   tags:
     - pihole
     - dnscrypt
@@ -62,18 +65,18 @@
     - pihole
     - dnscrypt
 
-- name: "[DNSCrypt] Install dnscrypt-proxy service"
-  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
-  register: pihole_dnscrypt_proxy_installed
-  become: yes
-  failed_when:
-    - pihole_dnscrypt_proxy_installed.rc != 0
-    - pihole_dnscrypt_proxy_installed.rc != 255
-  changed_when: pihole_dnscrypt_proxy_installed.rc == 0
-  notify: Run 'dnscrypt-proxy -service restart'
-  tags:
-    - pihole
-    - dnscrypt
+#- name: "[DNSCrypt] Install dnscrypt-proxy service"
+#  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
+#  register: pihole_dnscrypt_proxy_installed
+#  become: yes
+#  failed_when:
+#    - pihole_dnscrypt_proxy_installed.rc != 0
+#    - pihole_dnscrypt_proxy_installed.rc != 255
+#  changed_when: pihole_dnscrypt_proxy_installed.rc == 0
+#  notify: Run 'dnscrypt-proxy -service restart'
+#  tags:
+#    - pihole
+#    - dnscrypt
 
 - name: "[DNSCrypt] Uninstall old dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service uninstall
