@@ -9,6 +9,11 @@
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service restart
   become: yes
 
+- name: Stop dnscrypt-proxy.service
+  service: name=dnscrypt-proxy.service state=restarted
+  become: yes
+  listen: Restart dnscrypt-proxy.socket systemd unit
+
 - name: Reload systemd daemon
   systemd: daemon_reload=yes
   become: yes
