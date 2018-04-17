@@ -8,7 +8,7 @@ Wants=nss-lookup.target
 
 [Service]
 NonBlocking=true
-ExecStart=/usr/bin/dnscrypt-proxy --config /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+ExecStart={{ pihole_dnscrypt_bin }} --config {{ pihole_dnscrypt_config }}
 ProtectHome=yes
 ProtectControlGroups=yes
 ProtectKernelModules=yes
