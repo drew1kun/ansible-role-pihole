@@ -1,0 +1,32 @@
+---
+# Systemd
+- name: "[DNSCrypt_systemd] Generate systemd dnscrypt-proxy.socket unit"
+  template:
+    src: systemd/dnscrypt-proxy.socket.j2
+    dest: /lib/systemd/system/dnscrypt-proxy.socket
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: pihole_systemd.stat.exists
+  notify: Restart dnscrypt-proxy.socket systemd unit
+  tags:
+    - pihole
+    - dnscrypt
+    - dnscrypt_systemd
+
+- name: "[DNSCrypt_systemd] Generate systemd dnscrypt-proxy.service unit"
+  template:
+    src: systemd/dnscrypt-proxy.service.j2
+    dest: /lib/systemd/system/dnscrypt-proxy.service
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: pihole_systemd.stat.exists
+  notify: Restart dnscrypt-proxy.socket systemd unit
+  tags:
+    - pihole
+    - dnscrypt
+    - dnscrypt_systemd
+...

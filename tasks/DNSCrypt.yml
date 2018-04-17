@@ -40,10 +40,25 @@
     - pihole
     - dnscrypt
 
+- name: "[DNSCrypt] Check dnscrypt-proxy binary capabilities for running it as unprivileged user"
+  command: setcap -v cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
+  become: yes
+  changed_when: false
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: "[DNSCrypt] Fix dnscrypt-proxy binary capabilities for running it as unprivileged user"
+  command: setcap cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
+  become: yes
+  when: pihole_dnscrypt_bin_cap.rc != 0
+  tags:
+    - pihole
+    - dnscrypt
+
 - name: "[DNSCrypt] Generate /opt/dnscrypt-proxy/dnscrypt-proxy.toml configuration file"
   template: src=dnscrypt-proxy.toml.j2 dest=/opt/dnscrypt-proxy/dnscrypt-proxy.toml
   become: yes
-  #notify: Run 'dnscrypt-proxy -service restart'
   notify:
     - Restart dnscrypt-proxy.socket systemd unit
     - Run 'dnscrypt-proxy -service restart'
@@ -65,23 +80,40 @@
     - pihole
     - dnscrypt
 
-#- name: "[DNSCrypt] Install dnscrypt-proxy service"
-#  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
-#  register: pihole_dnscrypt_proxy_installed
-#  become: yes
-#  failed_when:
-#    - pihole_dnscrypt_proxy_installed.rc != 0
-#    - pihole_dnscrypt_proxy_installed.rc != 255
-#  changed_when: pihole_dnscrypt_proxy_installed.rc == 0
-#  notify: Run 'dnscrypt-proxy -service restart'
-#  tags:
-#    - pihole
-#    - dnscrypt
+- name: "[DNSCrytp] Check if distribution uses systemd init"
+  stat: path=/bin/systemctl
+  register: pihole_systemd
+  tags:
+    - pihole
+    - dnscrypt
+
+- name: "[DNSCrytp] Check if distribution uses systemd init"
+  include_tasks: DNSCrypt_systemd.yml
+  when: pihole_systemd
+  tags:
+    - pihole
+    - dnscrypt
+    - dnscrypt_systemd
+
+- name: "[DNSCrypt] Install dnscrypt-proxy service"
+  command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
+  register: pihole_dnscrypt_proxy_installed
+  become: yes
+  failed_when:
+    - pihole_dnscrypt_proxy_installed.rc != 0
+    - pihole_dnscrypt_proxy_installed.rc != 255
+  changed_when: pihole_dnscrypt_proxy_installed.rc == 0
+  notify: Run 'dnscrypt-proxy -service restart'
+  when: not pihole_systemd
+  tags:
+    - pihole
+    - dnscrypt
 
 - name: "[DNSCrypt] Uninstall old dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service uninstall
   become: yes
   when:
+    - not pihole_systemd
     - pihole_dnscrypt_proxy_installed.rc == 255
     - pihole_dnscrypt_force_upgrade
   tags:
@@ -92,62 +124,9 @@
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
   become: yes
   notify: Run 'dnscrypt-proxy -service restart'
-  when: pihole_dnscrypt_force_upgrade
-  tags:
-    - pihole
-    - dnscrypt
-
-- name: "[DNSCrypt] Check dnscrypt-proxy binary capabilities for running it as unprivileged user"
-  command: setcap -v cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
-  become: yes
-  register: pihole_dnscrypt_bin_cap
-  failed_when: false
-  changed_when: false
-  tags:
-    - pihole
-    - dnscrypt
-
-- name: "[DNSCrypt] Fix dnscrypt-proxy binary capabilities for running it as unprivileged user"
-  command: setcap cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
-  become: yes
-  when: pihole_dnscrypt_bin_cap.rc != 0
-  tags:
-    - pihole
-    - dnscrypt
-
-
-# Systemd
-- name: "[DNSCrytp] Check if systemd is present in distribution"
-  stat: path=/bin/systemctl
-  register: pihole_systemd
-  tags:
-    - pihole
-    - dnscrypt
-
-- name: "[DNSCrypt] Generate systemd dnscrypt-proxy.socket unit"
-  template:
-    src: systemd/dnscrypt-proxy.socket.j2
-    dest: /lib/systemd/system/dnscrypt-proxy.socket
-    owner: root
-    group: root
-    mode: 0644
-  become: yes
-  when: pihole_systemd.stat.exists
-  notify: Restart dnscrypt-proxy.socket systemd unit
-  tags:
-    - pihole
-    - dnscrypt
-
-- name: "[DNSCrypt] Generate systemd dnscrypt-proxy.service unit"
-  template:
-    src: systemd/dnscrypt-proxy.service.j2
-    dest: /lib/systemd/system/dnscrypt-proxy.service
-    owner: root
-    group: root
-    mode: 0644
-  become: yes
-  when: pihole_systemd.stat.exists
-  notify: Restart dnscrypt-proxy.socket systemd unit
+  when:
+    - not pihole_systemd
+    - pihole_dnscrypt_force_upgrade
   tags:
     - pihole
     - dnscrypt
