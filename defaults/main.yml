@@ -63,5 +63,4 @@ pihole_dnscrypt_force_tcp: 'false'        # Always use TCP to connect to upstrea
 # 9.9.9.9:53 -- Quad9 DNSSec anycast privacy oriented Google alternative
 # 114.114.114.114:53 -- for people in China.
 pihole_dnscrypt_fallback_resolver: 9.9.9.9:53 # non-encrypted fallback resolver. Only used if DNS config doesn't work
-pihole_dnscrypt_ignore_system_dns: 'true' # Unconditionally use the fallback resolver
 ...
