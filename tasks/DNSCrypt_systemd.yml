@@ -11,7 +11,7 @@
   notify: Restart dnscrypt-proxy.socket systemd unit
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt_systemd] Generate systemd dnscrypt-proxy.service unit"
   template:
@@ -24,5 +24,5 @@
   notify: Restart dnscrypt-proxy.socket systemd unit
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 ...

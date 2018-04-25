@@ -23,14 +23,37 @@ One of the following distros (or derivatives) required:
     - jessie
     - stretch
 
+**ATTENTION!**
+
+**vault_pihole_setupVars_conf_WEBPASSWD** and **vault_pihole_user_passwd** vars are set in *vars/main.yml*,
+which is encrypted with [ansible-vault][ansible-vault-link].
+
+Before running the role decrypt the file *vars/main.yml* with:
+
+    ansible-vault decrypt vars/main.yml --vault-password-file=.vault.key`
+
+OR set environment variable:
+
+    export ANSIBLE_VAULT_PASSWORD_FILE=.vault.key
+
+OR (PREFERRED):
+add the following to **ansible.cfg**:
+
+    [defaults]
+    vault_password_file = .vault.key
+
 Role Variables
 --------------
 
 | Variable | Description | Default |
 |----------|-------------|---------|
 | **pihole_force_upgrade** | Force reinstall `pihole` even if it's already installed |`no` |
+| **pihole_setupVars_conf_WEBPASSWD** | Password for pihole web interface for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
 | **pihole_setupVars_conf** | Configuration for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
 | **pihole_dnsmasq_custom_conf** | Custom DNSMasq configuration | see [`defaults/main.yml`](defaults/main.yml) |
+| **pihole_user_passwd** | SHA512 salted password for user `pihole` which the installer fails to create (hopefully will be
+fixed in the future) | see [`defaults/main.yml`](defaults/main.yml) |
+| **pihole_pitft** | Whether install drivers for pitft display from Adafruit (role pitft is no finished) | `no` |
 | **pihole_dnscrypt** | Whether install DNSCrypt-proxy2 or not | `yes` |
 | **pihole_dnscrypt_force_upgrade** | Force reinstall `dnscrypt-proxy2` even if it's already installed | `no` |
 | **pihole_dnscrypt_proxy2_link** | url of the latest `dnscrypt-proxy2` version. Must be updated manually | `https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm-2.0.8.tar.gz` |

@@ -5,7 +5,7 @@
   register: pihole_dnscrypt_proxy
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Download dnscrypt-proxy2"
   unarchive: src="{{ pihole_dnscrypt_proxy2_link }}" dest=/opt/ remote_src=yes
@@ -15,7 +15,7 @@
   # without 'when' will be downloaded unconditionally, because creates 'linux-arm' dir which will be renamed
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Make sure old /opt/dnscrypt-proxy is removed if pihole_dnscrypt_force_upgrade is set to yes"
   file: path=/opt/dnscrypt-proxy state=absent
@@ -23,7 +23,7 @@
   become: yes
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Rename /opt/linux-arm to /opt/dnscrypt-proxy"
   command: mv /opt/linux-arm /opt/dnscrypt-proxy
@@ -31,14 +31,14 @@
   when: pihole_linux_arm.changed
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Symlink /opt/dnscrypt-proxy/dnscrypt-proxy to {{ pihole_dnscrypt_bin }}"
   file: src=/opt/dnscrypt-proxy/dnscrypt-proxy dest="{{ pihole_dnscrypt_bin }}" state=link
   become: yes
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Check dnscrypt-proxy binary capabilities for running it as unprivileged user"
   command: setcap -v cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
@@ -48,7 +48,7 @@
   register: pihole_dnscrypt_bin_cap
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Fix dnscrypt-proxy binary capabilities for running it as unprivileged user"
   command: setcap cap_net_bind_service=+pe /opt/dnscrypt-proxy/dnscrypt-proxy
@@ -56,7 +56,7 @@
   when: pihole_dnscrypt_bin_cap.rc != 0
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Generate /opt/dnscrypt-proxy/dnscrypt-proxy.toml configuration file"
   template: src=dnscrypt-proxy.toml.j2 dest=/opt/dnscrypt-proxy/dnscrypt-proxy.toml
@@ -66,35 +66,35 @@
     - Run 'dnscrypt-proxy -service restart'
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Create dnscrypt config directory"
   file: path=/etc/dnscrypt-proxy state=directory
   become: yes
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Symlink /opt/dnscrypt-proxy/dnscrypt-proxy.toml to {{ pihole_dnscrypt_config }}"
   file: src=/opt/dnscrypt-proxy/dnscrypt-proxy.toml dest="{{ pihole_dnscrypt_config }}" state=link
   become: yes
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrytp] Check if distribution uses systemd init"
   stat: path=/bin/systemctl
   register: pihole_systemd
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrytp] Include systemd-related tasks, if distro is using systemd init"
   include_tasks: DNSCrypt_systemd.yml
   when: pihole_systemd.stat.exists
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Install dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
@@ -108,7 +108,7 @@
   when: not pihole_systemd.stat.exists
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Uninstall old dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service uninstall
@@ -119,7 +119,7 @@
     - pihole_dnscrypt_force_upgrade
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Upgrade dnscrypt-proxy service"
   command: /opt/dnscrypt-proxy/dnscrypt-proxy -service install
@@ -130,7 +130,7 @@
     - pihole_dnscrypt_force_upgrade
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 
 # Modify PIHOLE
@@ -140,7 +140,7 @@
   notify: Restart dnsmasq
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Modify /etc/pihole/setupVars.conf"
   replace:
@@ -151,7 +151,7 @@
   notify: Restart dnsmasq
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 
 - name: "[DNSCrypt] Modify /etc/dnsmasq.d/01-pihole.conf"
   replace:
@@ -162,5 +162,5 @@
   notify: Restart dnsmasq
   tags:
     - pihole
-    - dnscrypt
+    - pihole_dnscrypt
 ...
