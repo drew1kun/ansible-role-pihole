@@ -75,15 +75,6 @@
   tags:
     - pihole
 
-# The pitft role is not finished because the script does not provide non-interactive way of running
-#- name: '[main] Include drew-kun.pitft role'
-#  include_role:
-#    name: drew-kun.pitft
-#  when: pihole_pitft
-#  tags:
-#    - pihole
-#    - pihole_pitft
-
 - name: '[main] Include DNSCrypt related tasks'
   include_tasks: DNSCrypt.yml
   when: pihole_dnscrypt
@@ -104,5 +95,4 @@
   tags:
     - pihole
     - pihole_dnscrypt
-#    - pihole_pitft
 ...
