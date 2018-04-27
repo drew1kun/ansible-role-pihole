@@ -63,7 +63,7 @@
   include_tasks: installer_fix.yml
   when: pihole_dnscrypt
   tags:
-    - pihole
+    - pihole_fix
 #========================================================================
 
 - name: '[main] Generate /etc/dnsmasq.d/03-custom.conf'
