@@ -59,28 +59,11 @@
     - pihole
 
 #==== Temporary (hopefully) fix of 'pihole.sh --unattended' bug: ========
-- name: '[main] Create user pihole because installer fails to create the one'
-  user:
-    name: pihole
-    shell: /usr/sbin/nologin
-    password: "{{ pihole_user_passwd }}"
-    append: yes
-  become: yes
-
-- name: '[main] Restart pihole-FTL service'
-  service: name=pihole-FTL state=restarted
-  become: yes
-
-- name: '[main] Run `lighty-enable-mod fastcgi fastcgi-php`'
-  command: lighty-enable-mod fastcgi fastcgi-php
-  become: yes
-  register: pihole_lighty
-  changed_when: pihole_lighty.rc == 0
-  failed_when: pihole_lighty.rc != 0 and pihole_lighty.rc !=2 # $? = 2 - already enabled
-
-- name: '[main] Force-reload lighttpd service'
-  command: service lighttpd force-reload
-  become: yes
+- name: '[main] Include pihole installer fix tasks'
+  include_tasks: installer_fix.yml
+  when: pihole_dnscrypt
+  tags:
+    - pihole
 #========================================================================
 
 - name: '[main] Generate /etc/dnsmasq.d/03-custom.conf'
