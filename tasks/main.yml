@@ -75,6 +75,17 @@
   tags:
     - pihole
 
+- name: '[main] Set cron job for daily pihole updates'
+  cron:
+    name: "daily pihole updater"
+    user: "www-data"
+    minute: "0"
+    hour: "4"
+    job: "/usr/local/bin/pihole -up"
+  become: yes
+  tags:
+    - pihole
+
 - name: '[main] Include DNSCrypt related tasks'
   include_tasks: DNSCrypt.yml
   when: pihole_dnscrypt
