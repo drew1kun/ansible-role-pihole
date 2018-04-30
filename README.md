@@ -82,6 +82,10 @@ Dependencies
 
 None.
 
+NOTE: If installing [dnscrypt-proxy2][dnscrypt-proxy2-link] then install the [drew-kun.dnscrypt][dnscrypt-galaxy-link] role first:
+
+    ansible-galaxy install drew-kun.dnscrypt
+
 Example Playbook
 ----------------
 
@@ -106,3 +110,4 @@ Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 [minibian-link]: https://minibianpi.wordpress.com/
 [pihole-link]: https://pi-hole.net/
 [dnscrypt-proxy2-link]: https://github.com/jedisct1/dnscrypt-proxy
+[dnscrypt-galaxy-link]: https://galaxy.ansible.com/drew-kun/dnscrypt/

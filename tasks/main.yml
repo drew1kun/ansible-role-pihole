@@ -86,14 +86,23 @@
   tags:
     - pihole
 
-- name: '[main] Include DNSCrypt related tasks'
-  include_tasks: DNSCrypt.yml
-  when: pihole_dnscrypt
+#- name: '[main] Include DNSCrypt related tasks'
+#  include_tasks: DNSCrypt.yml
+#  when: pihole_dnscrypt
+#  tags:
+#    - pihole
+#    - pihole_dnscrypt
+
+- name: '[main] Include drew-kun.dnscrypt role'
+  include_role:
+    name: drew-kun.dnscrypt
+  vars:
+    dnscrypt_on_pihole: yes
   tags:
     - pihole
     - pihole_dnscrypt
 
-- name:
+- name: '[main] Include drew-kun.resolv role'
   include_role:
     name: drew-kun.resolv
   vars:
