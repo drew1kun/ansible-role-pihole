@@ -1,4 +1,4 @@
-Ansible role: bootstrap_core
+Ansible role: pihole
 =========
 
 [![MIT licensed][mit-badge]][mit-link]

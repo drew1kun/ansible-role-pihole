@@ -55,8 +55,8 @@ pihole_dnscrypt: yes                      # Install dnscrypt?
 pihole_dnscrypt_force_upgrade: no         # if yes, then old version of dnscript (if it exists) will be removed.
                                           # If no, then already installed dnscript binaries will be used.
 pihole_dnscrypt_proxy2_link: >
-  https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm-2.0.8.tar.gz
- # https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm64-2.0.8.tar.gz
+  https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm64-2.0.8.tar.gz
+ # https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.8/dnscrypt-proxy-linux_arm-2.0.8.tar.gz
 
 pihole_dnscrypt_bin: /usr/local/bin/dnscrypt-proxy  # where to put dnscrypt binary
 pihole_dnscrypt_config: /etc/dnscrypt-proxy/dnscrypt-proxy.toml # where to store dnscrypt config
