@@ -86,13 +86,6 @@
   tags:
     - pihole
 
-#- name: '[main] Include DNSCrypt related tasks'
-#  include_tasks: DNSCrypt.yml
-#  when: pihole_dnscrypt
-#  tags:
-#    - pihole
-#    - pihole_dnscrypt
-
 - name: '[main] Include drew-kun.dnscrypt role'
   include_role:
     name: drew-kun.dnscrypt
