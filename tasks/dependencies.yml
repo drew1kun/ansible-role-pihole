@@ -21,5 +21,6 @@
   when: ansible_distribution_version < 9
   tags:
     - pihole
+    - pihole_fix
     - pihole_dependencies
 ...
