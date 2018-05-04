@@ -26,7 +26,7 @@
     - pihole
 
 ##==== Better installing algorithm (doesn't work now ) =======
-## Installer is broken in master branch ()
+## Installer is broken in master branch ( hangs on 36% of installation)
 #- name: '[main] Clone pihole repo'
 #  git:
 #    repo: https://github.com/pi-hole/pi-hole.git
