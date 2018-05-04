@@ -25,7 +25,22 @@
   tags:
     - pihole
 
-- name: '[main] Generate /etc/pihole/setupVars.conf for unattended pihole install'
+- name: '[main] Clone pihole repo'
+  git:
+    repo: https://github.com/pi-hole/pi-hole.git
+    depth: 1
+    dest: /tmp/pi-hole
+    version: master  # master git branch
+  tags:
+    - pihole
+
+- name: '[main] Check if /etc/pihole/setupVars.conf already exists'
+  stat: path=/etc/pihole/setupVars.conf
+  register: pihole_setupVars
+  tags:
+    - pihole
+
+- name: '[main] Generate /etc/pihole/setupVars.conf for unattended pihole install if it does not exist or if upgrading'
   template:
     src: setupVars.conf.j2
     dest: /etc/pihole/setupVars.conf
@@ -33,28 +48,16 @@
     group: root
     mode: 0644
   become: yes
-  when: not pihole.stat.exists or pihole_force_upgrade
-  tags:
-    - pihole
-
-- name: '[main] Check if /tmp/pihole.sh exists'
-  stat: path=/tmp/pihole.sh
-  register: pihole_downloaded
-  tags:
-    - pihole
-
-- name: '[main] Download pihole installer script'
-  get_url:
-    url: https://install.pi-hole.net
-    dest: /tmp/pihole.sh
-  when: not pihole_downloaded.stat.exists or pihole_force_upgrade
+  when: not pihole_setupVars.stat.exists or pihole_force_upgrade
   tags:
     - pihole
 
 - name: '[main] Install pihole'
-  shell: 'bash /tmp/pihole.sh --unattended'
+  command: 'bash /tmp/pi-hole/automated\ install/basic-install.sh --unattended'
   become: yes
-  when: not pihole.stat.exists or ( pihole.stat.exists and pihole_force_upgrade )
+  when:
+    - pihole_setupVars.stat.exists
+    - not pihole.stat.exists or pihole_force_upgrade
   tags:
     - pihole
 
