@@ -91,9 +91,4 @@
     resolv_lock: yes
   tags:
     - pihole
-
-- meta: flush_handlers
-  tags:
-    - pihole
-    - pihole_dnscrypt
 ...
