@@ -4,7 +4,7 @@
 # PIHOLE
 pihole_force_upgrade: no  # if yes, then will reinstall pihole even if it's already installed
 
-# Password for pihole Web Interface must be stored as double sha256 hash
+# Password for pihole Web Interface must be stored as DOUBLE SHA256 Hash
 # (see pihole source code - https://github.com/pi-hole/AdminLTE/blob/master/scripts/pi-hole/php/password.php#L41):
 #
 # Hash password on Linux:
@@ -13,7 +13,8 @@ pihole_force_upgrade: no  # if yes, then will reinstall pihole even if it's alre
 # Hash password on MacOS:
 #   echo -n P@ssw0rd | shasum -a 256 | awk '{printf "%s",$1 }' | shasum -a 256
 #
-pihole_setupVars_conf_WEBPASSWD: "WEBPASSWORD={{ vault_pihole_setupVars_conf_WEBPASSWD }}"
+# P@ssword:
+pihole_setupVars_conf_WEBPASSWD: 0e69e6a4038df88d4c62c837edd7e04a95ea6368bca9d469e00ad766a2266770
 
 pihole_setupVars_conf: |
   PIHOLE_INTERFACE=wlan0
@@ -42,13 +43,7 @@ pihole_dnsmasq_custom_conf: |
   server=/bearden.lan/192.168.1.1
   server=/bearden.home/192.168.1.1
 
-pihole_user_passwd: "{{ vault_pihole_user_passwd }}"
-
-
-# TFT DISPLAY
-pihole_pitft: no  # Setup tft display for pihole (autologin + autorun chronometer.sh)
-
-
 # DNSCRYPT
-pihole_dnscrypt: yes                      # Install dnscrypt?
+#pihole_dnscrypt: yes                      # Install dnscrypt?
+pihole_dnscrypt: no                      # Install dnscrypt?
 ...

@@ -25,14 +25,12 @@
   tags:
     - pihole
 
-##========= Better installing algorithm (doesn't work now ) =============
-## Installer is broken in master branch ()
 - name: '[main] Clone pihole repo'
   git:
     repo: https://github.com/pi-hole/pi-hole.git
     depth: 1
     dest: /tmp/pi-hole
-    version: master  # master git branch
+    version: master
   tags:
     - pihole
 
@@ -63,69 +61,6 @@
     - not pihole.stat.exists or pihole_force_upgrade
   tags:
     - pihole
-##=======================================================================
-
-##=======================================================================
-## Remove this section when master branch is fixed
-#- name: '[main] Check if /tmp/pihole.sh exists'
-#  stat: path=/tmp/pihole.sh
-#  register: pihole_downloaded
-#  tags:
-#    - pihole
-#
-#- name: '[main] Check if /etc/pihole/setupVars.conf already exists'
-#  stat: path=/etc/pihole/setupVars.conf
-#  register: pihole_setupVars
-#  tags:
-#   - pihole
-#
-#- name: '[main] Generate /etc/pihole/setupVars.conf for unattended pihole install if it does not exist or if upgrading'
-#  template:
-#    src: setupVars.conf.j2
-#    dest: /etc/pihole/setupVars.conf
-#    owner: root
-#    group: root
-#    mode: 0644
-#  become: yes
-#  when: not pihole_setupVars.stat.exists or pihole_force_upgrade
-#  tags:
-#    - pihole
-#
-#- name: '[main] Download pihole installer script'
-#  get_url:
-#    url: https://install.pi-hole.net
-#    dest: /tmp/pihole.sh
-#  when: not pihole_downloaded.stat.exists or pihole_force_upgrade
-#  tags:
-#    - pihole
-#
-#- name: '[main] Install pihole'
-#  shell: 'bash /tmp/pihole.sh --unattended'
-#  become: yes
-#  when:
-#    - pihole_setupVars_generated.changed or pihole_setupVars.stat.exists
-#    - not pihole.stat.exists or pihole_force_upgrade
-#  tags:
-#    - pihole
-#========================================================================
-
-#==== Temporary (hopefully) fix of 'pihole.sh --unattended' bug: ========
-#- name: '[main] Include pihole installer fix tasks'
-#  include_tasks: installer_fix.yml
-#  tags:
-#    - pihole
-#    - pihole_fix
-#========================================================================
-
-### dnsmasq will be removed in favour of FTLDNS
-#- name: '[main] Generate /etc/dnsmasq.d/03-custom.conf'
-#  template:
-#    src: 03-custom.conf.j2
-#    dest: /etc/dnsmasq.d/03-custom.conf
-#  become: yes
-#  notify: Restart dnsmasq
-#  tags:
-#    - pihole
 
 - name: '[main] Set cron job for daily pihole updates'
   cron:
