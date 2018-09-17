@@ -73,22 +73,13 @@
   tags:
     - pihole
 
-- name: '[main] Include drew-kun.dnscrypt role'
-  include_role:
-    name: drew-kun.dnscrypt
-  vars:
-    dnscrypt_on_pihole: yes
-  when: pihole_dnscrypt
-  tags:
-    - pihole
-    - pihole_dnscrypt
-
 - name: '[main] Include drew-kun.resolv role'
   include_role:
     name: drew-kun.resolv
   vars:
     resolv_nameservers: [127.0.0.1]
     resolv_lock: yes
+  when: pihole_resolv
   tags:
     - pihole
 ...
