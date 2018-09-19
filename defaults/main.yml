@@ -23,10 +23,10 @@ pihole_setupVars_conf: |
   QUERY_LOGGING=true
   INSTALL_WEB=true
   DNSMASQ_LISTENING=single
-  PIHOLE_DNS_1=208.67.222.222
-  PIHOLE_DNS_2=208.67.220.220
-  PIHOLE_DNS_3=2620:0:ccc::2
-  PIHOLE_DNS_4=2620:0:ccd::2
+  PIHOLE_DNS_1=9.9.9.9
+  PIHOLE_DNS_2=149.112.122.122
+  PIHOLE_DNS_3=2620:fe::fe  # Secure: Blocklist, DNSSEC, No EDNS Client-Subnet
+  PIHOLE_DNS_4=2620:fe::9   # Secure: Blocklist, DNSSEC, No EDNS Client-Subnet
   DNS_FQDN_REQUIRED=true
   DNS_BOGUS_PRIV=true
   DNSSEC=true
