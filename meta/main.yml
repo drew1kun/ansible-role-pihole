@@ -20,8 +20,4 @@ galaxy_info:
   - dnscrypt
   - dnscrypt-proxy
   - dnscrypt-proxy2
-
-dependencies:
-  - { role: drew-kun.resolv, resolv_lock: no }
-
 ...
