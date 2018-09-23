@@ -42,6 +42,4 @@ pihole_dnsmasq_custom_conf: |
   server=/bearden.local/192.168.1.1
   server=/bearden.lan/192.168.1.1
   server=/bearden.home/192.168.1.1
-
-pihole_resolv: no
 ...
