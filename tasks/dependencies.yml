@@ -1,7 +1,14 @@
 ---
-- name: '[dependencies] Make sure curl package is installed'
+- name: '[dependencies] Update apt in order the installer to not fail at first run'
   apt:
-    update_cache: yes  # This is a must for the installer to not fail at first run
+    update_cache: yes
+  become: yes
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: '[dependencies] Make sure curl and git packages are installed'
+  apt:
     name:
       - curl
       - git
