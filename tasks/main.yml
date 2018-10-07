@@ -62,6 +62,15 @@
   tags:
     - pihole
 
+- name: '[main] Generate /etc/dnsmasq.d/03-custom.conf'
+  template:
+    src: 03-custom.conf.j2
+    dest: /etc/dnsmasq.d/03-custom.conf
+  become: yes
+ notify: Restart pihole-FTL service
+  tags:
+    - pihole
+
 - name: '[main] Set cron job for daily pihole updates'
   cron:
     name: "daily pihole updater"
