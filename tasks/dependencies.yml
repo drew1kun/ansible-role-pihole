@@ -1,17 +1,7 @@
 ---
-- name: '[dependencies] Update apt in order the installer to not fail at first run'
-  apt:
-    update_cache: yes
-  become: yes
-  tags:
-    - pihole
-    - pihole_dependencies
-
-- name: '[dependencies] Make sure curl and git packages are installed'
-  apt:
-    name:
-      - curl
-      - git
+- name: '[dependencies] Make sure docker is installed'
+  package:
+    name: docker
     state: present
   become: yes
   tags:
