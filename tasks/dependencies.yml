@@ -1,9 +1,80 @@
 ---
-- name: '[dependencies] Make sure docker is installed'
+- name: "[dependencies] Update apt in order the installer to not fail at first run"
+  apt:
+    update_cache: yes
+  become: yes
+  when:
+    - ansible_os_family == 'Debian'
+    - not pihole_docker
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Make sure curl and git packages are installed"
   package:
-    name: docker
+    name:
+      - curl
+      - git
     state: present
   become: yes
+  when: not pihole_docker
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Make sure python-pip are installed"
+  apt:
+    name: python-pip
+    state: present
+  when: pihole_docker
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Make sure docker python modules are installed"
+  pip:
+    name: docker
+  when: pihole_docker
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Check if docker is already installed"
+  stat: path=/usr/bin/docker
+  register: pihole_docker_bin
+  when: pihole_docker
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Get universal docker installation scritpt from get.docker.com if docker is not already installed"
+  get_url:
+    url: https://get.docker.com
+    dest: /tmp/docker_install.sh
+    mode: 0755
+  when:
+  - pihole_docker
+  - not pihole_docker_bin.stat.exists
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Install docker if it is not already installed"
+  shell: /tmp/docker_install.sh
+  when:
+  - pihole_docker
+  - not pihole_docker_bin.stat.exists
+  tags:
+    - pihole
+    - pihole_dependencies
+
+- name: "[dependencies] Add user {{ ansible_user_id }} to 'docker' group"
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+  become: yes
+  when: pihole_docker
   tags:
     - pihole
     - pihole_dependencies
