@@ -51,13 +51,13 @@ None.
 Example Playbook
 ----------------
 
-    ```yaml
+```yaml
     - hosts: raspberrypi
       gather_facts: yes
       roles:
       - role: drew-kun.pihole
         pihole_setupVars_conf_WEBPASSWD: "{{ vault_pihole_setupVars_conf_WEBPASSWD }}"
-    ```
+```
 
 License
 -------
