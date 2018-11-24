@@ -38,10 +38,9 @@ Role Variables
 | Variable | Description | Default |
 |----------|-------------|---------|
 | **pihole_docker** | Whether to use docker or not | `no` |
-| **pihole_docker_ports** | List of ports to expose in docker container | `127.0.0.1:53:53/udp,
-0.0.0.0:67:67/udp, 0.0.0.0:80:80/tcp, 0.0.0.0:443:443/tcp]` |
-| **pihole_docker_env** | Dictionary, containing the host ipv4/ipv6 addresses | see [`{ ServerIP: 192.168.1.247 }` |
-| **pihole_docker_dns_servers** | DNS server for pihole docker container to use | `[127.0.0.1]` |
+| **pihole_docker_ports** | List of ports to expose in docker container | `[127.0.0.1:53:53/udp, 0.0.0.0:67:67/udp, 0.0.0.0:80:80/tcp, 0.0.0.0:443:443/tcp]` |
+| **pihole_docker_env** | Dictionary, containing the host ipv4/ipv6 addresses | `{ ServerIP: 192.168.1.247 }` |
+| **pihole_docker_dns_servers** | List of DNS servers for pihole docker container to use | `[127.0.0.1]` |
 
 
 Dependencies
