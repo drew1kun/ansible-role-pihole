@@ -31,7 +31,17 @@ Role Variables
 | **pihole_force_upgrade** | Force reinstall `pihole` even if it's already installed |`no` |
 | **pihole_setupVars_conf_WEBPASSWD** | Password for pihole web interface for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
 | **pihole_setupVars_conf** | Configuration for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
-| **pihole_dnsmasq_custom_conf** | Custom DNSMasq configuration | see [`defaults/main.yml`](defaults/main.yml) |
+| **pihole_dnsmasq_custom_conf** | Custom DNSMasq/pihole-FTL configuration | see [`defaults/main.yml`](defaults/main.yml) |
+
+### Docker-related vars
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| **pihole_docker** | Whether to use docker or not | `no` |
+| **pihole_docker_ports** | List of ports to expose in docker container | `127.0.0.1:53:53/udp,
+0.0.0.0:67:67/udp, 0.0.0.0:80:80/tcp, 0.0.0.0:443:443/tcp]` |
+| **pihole_docker_env** | Dictionary, containing the host ipv4/ipv6 addresses | see [`{ ServerIP: 192.168.1.247 }` |
+| **pihole_docker_dns_servers** | DNS server for pihole docker container to use | `[127.0.0.1]` |
 
 
 Dependencies
