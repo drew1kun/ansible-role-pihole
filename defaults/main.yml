@@ -39,9 +39,23 @@ pihole_setupVars_conf: |
 
 pihole_dnsmasq_custom_conf: |
   # Local DNS:
-  server=/bearden.local/192.168.1.1
-  server=/bearden.lan/192.168.1.1
-  server=/bearden.home/192.168.1.1
+  server=/cypherpunk.lan/192.168.1.1
 
-pihole_docker: no
+
+# DOCKER SETTINGS
+pihole_docker: no  # Install the pihole as a docker container
+
+pihole_docker_ports:
+  - 127.0.0.1:53:53/udp
+  - 0.0.0.0:67:67/udp
+  - 0.0.0.0:80:80/tcp
+  - 0.0.0.0:443:443/tcp
+
+pihole_docker_env:
+  ServerIP: 192.168.1.247
+  #ServerIPv6: fdb3:5ed:8a99:0:ba27:ebff:fe1d:1ed3
+  #ServerIPv6: fdb3:5ed:8a99:0:ba27:ebff:fef2:ef97
+
+pihole_docker_dns_servers:
+  - 127.0.0.1
 ...
