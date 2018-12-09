@@ -29,9 +29,9 @@ Role Variables
 | Variable | Description | Default |
 |----------|-------------|---------|
 | **pihole_force_upgrade** | Force reinstall `pihole` even if it's already installed |`no` |
-| **pihole_setupVars_conf_WEBPASSWD** | Password for pihole web interface for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
-| **pihole_setupVars_conf** | Configuration for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml) |
-| **pihole_dnsmasq_custom_conf** | Custom DNSMasq/pihole-FTL configuration | see [`defaults/main.yml`](defaults/main.yml) |
+| **pihole_setupVars_conf_WEBPASSWD** | Password for pihole web interface for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml#L17) |
+| **pihole_setupVars_conf** | Configuration for quiet `pihole` installation | see [`defaults/main.yml`](defaults/main.yml#L19) |
+| **pihole_dnsmasq_custom_conf** | Custom DNSMasq/pihole-FTL configuration | see [`defaults/main.yml`](defaults/main.yml#L40) |
 
 ### Docker-related vars
 
