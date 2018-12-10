@@ -4,8 +4,8 @@
 - name: '[main] Include dependencies tasks'
   include_tasks: dependencies.yml
   tags:
-    - pihole
-    - pihole_dependencies
+  - pihole
+  - pihole_dependencies
 
 # This step needed for both types of installation
 - name: '[main] Make sure /etc/pihole directory exists'
@@ -17,17 +17,17 @@
     mode: 0755
   become: yes
   tags:
-    - pihole
+  - pihole
 
 - name: '[main] Include installation.yaml tasks if not using docker'
   include_tasks: install.yml
   when: not pihole_docker
   tags:
-    - pihole
+  - pihole
 
 - name: '[main] Include docker.yaml tasks if using docker'
   include_tasks: docker.yml
   when: pihole_docker
   tags:
-    - pihole
+  - pihole
 ...

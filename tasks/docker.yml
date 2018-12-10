@@ -12,7 +12,7 @@
     mode: 0755
   become: yes
   tags:
-    - pihole
+  - pihole
 
 - name: "[docker] Generate /etc/dnsmasq.d/03-custom.conf"
   template:
@@ -20,18 +20,22 @@
     dest: /etc/dnsmasq.d/03-custom.conf
   become: yes
   tags:
-    - pihole
+  - pihole
 
 - name: "[docker] Check the hosts IPv4 (may not work for VPN/tun0)"
   shell: ip route get 8.8.8.8 | awk '{ print $NF; exit }'
   register: pihole_docker_host_ipv4
   changed_when: false
+  tags:
+  - pihole
 
 - name: "[docker] Check the hosts IPv6 (may not work for VPN/tun0)"
   shell: >
     ip -6 route get 2001:4860:4860::8888 | awk '{for(i=1;i<=NF;i++) if ($i=="src") print $(i+1)}'
   register: pihole_docker_host_ipv6
   changed_when: false
+  tags:
+  - pihole
 
 # FOR test only
 - name: "[docker] Set correct hosts IPs"
@@ -39,7 +43,8 @@
     pihole_docker_env:
       "{{ pihole_docker_env | combine({'ServerIP': pihole_docker_host_ipv4.stdout }) }}"
   changed_when: false
-
+  tags:
+  - pihole
 
 #- name: '[docker] Set correct hosts IPs'
 #  set_fact:
@@ -47,11 +52,15 @@
 #      "{{ pihole_docker_env | combine({'ServerIP': pihole_docker_host_ipv4.stdout,
 #          'ServerIPv6': pihole_docker_host_ipv6.stdout}) }}"
 #  changed_when: false
+#  tags:
+#  - pihole
 
 - name: "[docker] Add the '{{ pihole_docker_host_ipv4.stdout}}:53:53/udp' to the list of exposed ports"
   set_fact:
     pihole_docker_ports:
       "[ '{{ pihole_docker_host_ipv4.stdout }}:53:53/udp' ] + {{ pihole_docker_ports }}"
+  tags:
+  - pihole
 
 - name: "[docker] Run the official pihole docker container"
   docker_container:
@@ -66,4 +75,7 @@
     restart_policy: unless-stopped
     capabilities: NET_ADMIN
     dns_servers: "{{ pihole_docker_dns_servers }}"
+  tags:
+  - pihole
+
 ...
