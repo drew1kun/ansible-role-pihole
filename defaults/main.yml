@@ -25,8 +25,8 @@ pihole_setupVars_conf: |
   DNSMASQ_LISTENING=single
   PIHOLE_DNS_1=9.9.9.9
   PIHOLE_DNS_2=149.112.122.122
-  PIHOLE_DNS_3=2620:fe::fe  # Secure: Blocklist, DNSSEC, No EDNS Client-Subnet
-  PIHOLE_DNS_4=2620:fe::9   # Secure: Blocklist, DNSSEC, No EDNS Client-Subnet
+  PIHOLE_DNS_3=2620:fe::fe
+  PIHOLE_DNS_4=2620:fe::9
   DNS_FQDN_REQUIRED=true
   DNS_BOGUS_PRIV=true
   DNSSEC=true
@@ -46,10 +46,10 @@ pihole_dnsmasq_custom_conf: |
 pihole_docker: no  # Install the pihole as a docker container
 
 pihole_docker_ports:
-  - 127.0.0.1:53:53/udp
-  - 0.0.0.0:67:67/udp
-  - 0.0.0.0:80:80/tcp
-  - 0.0.0.0:443:443/tcp
+- 127.0.0.1:53:53/udp
+- 0.0.0.0:67:67/udp
+- 0.0.0.0:80:80/tcp
+- 0.0.0.0:443:443/tcp
 
 pihole_docker_env:
   ServerIP: 192.168.1.247
@@ -57,5 +57,5 @@ pihole_docker_env:
   #ServerIPv6: fdb3:5ed:8a99:0:ba27:ebff:fef2:ef97
 
 pihole_docker_dns_servers:
-  - 127.0.0.1
+- 127.0.0.1
 ...
