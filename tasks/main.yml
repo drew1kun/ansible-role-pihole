@@ -16,18 +16,15 @@
     group: root
     mode: 0755
   become: yes
-  tags:
-  - pihole
+  tags: pihole
 
 - name: '[main] Include installation.yaml tasks if not using docker'
   include_tasks: install.yml
   when: not pihole_docker
-  tags:
-  - pihole
+  tags: pihole
 
 - name: '[main] Include docker.yaml tasks if using docker'
   include_tasks: docker.yml
   when: pihole_docker
-  tags:
-  - pihole
+  tags: pihole
 ...

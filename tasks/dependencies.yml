@@ -3,6 +3,8 @@
   apt:
     update_cache: yes
   become: yes
+  register: pihole_upd_result
+  until: pihole_upd_result is succeeded
   when:
   - ansible_os_family == 'Debian'
   - not pihole_docker
@@ -17,6 +19,8 @@
     - git
     state: present
   become: yes
+  register: pihole_dep_result
+  until: pihole_dep_result is succeeded
   when: not pihole_docker
   tags:
   - pihole
@@ -26,6 +30,8 @@
   apt:
     name: python-pip
     state: present
+  register: pihole_pip_result
+  until: pihole_pip_result is succeeded
   when: pihole_docker
   tags:
   - pihole
@@ -34,6 +40,8 @@
 - name: "[dependencies] Make sure docker python modules are installed"
   pip:
     name: docker
+#  register: pihole_pip_result
+#  until: pihole_pip_result is succeeded
   when: pihole_docker
   tags:
   - pihole
@@ -60,7 +68,7 @@
   - pihole_dependencies
 
 - name: "[dependencies] Install docker if it is not already installed"
-  shell: /tmp/docker_install.sh
+  command: /tmp/docker_install.sh
   when:
   - pihole_docker
   - not pihole_docker_bin.stat.exists
