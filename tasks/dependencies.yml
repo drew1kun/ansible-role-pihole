@@ -55,7 +55,7 @@
   - pihole
   - pihole_dependencies
 
-- name: "[dependencies] Get universal docker installation scritpt from get.docker.com if docker is not already installed"
+- name: "[dependencies] Get universal docker installation script from get.docker.com if docker is not already installed"
   get_url:
     url: https://get.docker.com
     dest: /tmp/docker_install.sh
