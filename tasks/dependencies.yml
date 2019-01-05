@@ -40,8 +40,8 @@
 - name: "[dependencies] Make sure docker python modules are installed"
   pip:
     name: docker
-#  register: pihole_pip_result
-#  until: pihole_pip_result is succeeded
+  register: pihole_pip_result
+  until: pihole_pip_result is succeeded
   when: pihole_docker
   tags:
   - pihole
