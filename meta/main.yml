@@ -5,6 +5,8 @@ galaxy_info:
 
   license: MIT
 
+  #min_ansible_container_version:
+
   min_ansible_version: 1.2
 
   github_branch: master
