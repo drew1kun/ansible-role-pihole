@@ -16,6 +16,6 @@ galaxy_info:
   galaxy_tags:
   - pihole
   - dnscrypt
-  - dnscrypt-proxy
-  - dnscrypt-proxy2
+  - proxy2
+  - proxy
 ...
