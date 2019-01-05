@@ -46,7 +46,7 @@
 #  tags:
 #  - pihole
 
-- name: "[docker] Add the '{{ pihole_docker_host_ipv4.stdout}}:53:53/udp' to the list of exposed ports"
+- name: "[docker] Add the '{{ pihole_docker_host_ipv4.stdout }}:53:53/udp' to the list of exposed ports"
   set_fact:
     pihole_docker_ports:
       "[ '{{ pihole_docker_host_ipv4.stdout }}:53:53/udp' ] + {{ pihole_docker_ports }}"
