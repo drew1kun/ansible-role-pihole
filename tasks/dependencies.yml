@@ -6,7 +6,7 @@
   register: pihole_upd_result
   until: pihole_upd_result is succeeded
   when:
-  - ansible_os_family == 'Debian'
+  - "'Debian' in ansible_os_family"
   - not pihole_docker
   tags:
   - pihole
