@@ -1,8 +1,8 @@
 ---
 # tasks file for ansible-pihole
 
-- name: '[main] Include dependencies tasks'
-  include_tasks: dependencies.yml
+- name: '[main] Import dependencies tasks'
+  import_tasks: dependencies.yml
   tags:
   - pihole
   - pihole_dependencies
