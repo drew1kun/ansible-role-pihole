@@ -5,6 +5,7 @@ Ansible role: pihole
 [![Galaxy Role][role-badge]][galaxy-link]
 
 **[DEPRECATED]**
+*Left here for reference only*
 
 Ansible role which installs and configures [Pihole][pihole-link] and [DNSCrypt-proxy2][dnscrypt-proxy2-link] on RaspberryPi.
 
